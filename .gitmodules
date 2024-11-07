@@ -1,0 +1,6 @@
+[submodule "LuaJIT"]
+	path = LuaJIT
+	url = https://github.com/iii-i/LuaJIT.git
+[submodule "luajit2-test-suite"]
+	path = luajit2-test-suite
+	url = https://github.com/iii-i/luajit2-test-suite

@@ -1,0 +1,4 @@
+BasedOnStyle: GNU
+BreakBeforeBraces: Linux
+SpaceBeforeParens: ControlStatements
+UseTab: Always
