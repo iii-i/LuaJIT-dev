@@ -6,6 +6,19 @@ export XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
 all:
 	cd LuaJIT && $(MAKE)
 
+.PHONY: install
+install:
+	cd LuaJIT && $(MAKE) install PREFIX=$(PWD)/dist
+
+.PHONY: test
+test: install
+	cd luajit2-test-suite && \
+		./run-tests \
+			$(PWD)/dist \
+			$(PWD)/dist/bin/luajit \
+			$(CROSS)gcc \
+			$(CROSS)g++
+
 .PHONY: bear
 bear:
 	cd LuaJIT && \
