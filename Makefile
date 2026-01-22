@@ -1,14 +1,12 @@
-export CCDEBUG=-g
-export CCOPT=-O0
-export XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
+MFLAGS=CCDEBUG=-g CCOPT=-O0 XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
 
 .PHONY: all
 all:
-	cd LuaJIT && $(MAKE)
+	cd LuaJIT && $(MAKE) $(MFLAGS)
 
 .PHONY: install
 install:
-	cd LuaJIT && $(MAKE) install PREFIX=$(PWD)/dist
+	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist
 
 .PHONY: test
 test: install
@@ -23,7 +21,8 @@ test: install
 bear:
 	cd LuaJIT && \
 		$(MAKE) clean && \
-		bear --output $(PWD)/.compile_commands.json -- $(MAKE) && \
+		bear --output $(PWD)/.compile_commands.json -- \
+			$(MAKE) $(MFLAGS) && \
 		mv $(PWD)/.compile_commands.json $(PWD)/compile_commands.json
 
 .PHONY: qtcreator
