@@ -28,3 +28,11 @@ bear:
 .PHONY: qtcreator
 qtcreator: bear
 	qtcreator compile_commands.json &
+
+.PHONY: gdb
+gdb:
+	gdb-multiarch \
+		-ex 'set pagination off' \
+		-ex 'source scripts/luajit-gdb.py' \
+		-ex 'target remote :1234' \
+		LuaJIT/src/luajit
