@@ -4,3 +4,6 @@
 [submodule "luajit2-test-suite"]
 	path = luajit2-test-suite
 	url = https://github.com/iii-i/luajit2-test-suite
+[submodule "luajit2"]
+	path = luajit2
+	url = https://github.com/openresty/luajit2.git

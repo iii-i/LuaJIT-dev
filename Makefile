@@ -3,27 +3,38 @@ MFLAGS=CCDEBUG=-g CCOPT=-O0 XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
 .PHONY: all
 all:
 	cd LuaJIT && $(MAKE) $(MFLAGS)
+	cd luajit2 && $(MAKE) $(MFLAGS)
+
+.PHONY: clean
+clean:
+	cd LuaJIT && $(MAKE) $(MFLAGS) clean
+	cd luajit2 && $(MAKE) $(MFLAGS) clean
 
 .PHONY: install
 install:
-	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist
+	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist-LuaJIT
+	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist-luajit2
 
-.PHONY: test
-test: install
+.PHONY: __test
+__test:
 	cd luajit2-test-suite && \
 		./run-tests \
-			$(PWD)/dist \
-			$(PWD)/dist/bin/luajit \
+			$(PWD)/dist-$(FLAVOR) \
+			$(PWD)/dist-$(FLAVOR)/bin/luajit \
 			$(CROSS)gcc \
 			$(CROSS)g++
 
+
+.PHONY: test
+test: install
+	$(MAKE) __test FLAVOR=LuaJIT
+	$(MAKE) __test FLAVOR=luajit2
+
 .PHONY: bear
 bear:
-	cd LuaJIT && \
-		$(MAKE) clean && \
-		bear --output $(PWD)/.compile_commands.json -- \
-			$(MAKE) $(MFLAGS) && \
-		mv $(PWD)/.compile_commands.json $(PWD)/compile_commands.json
+	$(MAKE) clean
+	bear --output .compile_commands.json -- $(MAKE)
+	mv .compile_commands.json compile_commands.json
 
 .PHONY: qtcreator
 qtcreator: bear

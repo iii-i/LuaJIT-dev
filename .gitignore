@@ -1,3 +1,4 @@
 .qtc_clangd/
 compile_commands.json
-dist/
+dist-LuaJIT/
+dist-luajit2/
