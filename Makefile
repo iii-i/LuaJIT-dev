@@ -1,4 +1,10 @@
 MFLAGS=CCDEBUG=-g CCOPT=-O0 XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
+# https://github.com/LuaJIT/LuaJIT/pull/1302
+SKIP_TESTS=test/sysdep/ffi_include_gtk.lua
+SKIP_TESTS+=test/sysdep/ffi_include_std.lua
+# module 'table.clone' not found
+SKIP_TESTS+=test/misc/hstore_elimination.lua
+TESTS=$(shell cd luajit2-test-suite && git ls-files test/*.lua | grep -v $(foreach t,$(SKIP_TESTS),-e $(t)))
 
 .PHONY: all
 all:
@@ -7,8 +13,9 @@ all:
 
 .PHONY: clean
 clean:
-	cd LuaJIT && $(MAKE) $(MFLAGS) clean
-	cd luajit2 && $(MAKE) $(MFLAGS) clean
+	cd LuaJIT && git clean -dfx
+	cd luajit2 && git clean -dfx
+	cd luajit2-test-suite && git clean -dfx
 
 .PHONY: install
 install:
@@ -22,8 +29,8 @@ __test:
 			$(PWD)/dist-$(FLAVOR) \
 			$(PWD)/dist-$(FLAVOR)/bin/luajit \
 			$(CROSS)gcc \
-			$(CROSS)g++
-
+			$(CROSS)g++ \
+			$(TESTS)
 
 .PHONY: test
 test: install
