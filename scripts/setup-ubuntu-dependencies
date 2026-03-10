@@ -1,0 +1,37 @@
+#!/bin/sh
+set -e -u -x
+. /etc/os-release
+sudo tee /etc/apt/sources.list.d/ports.sources <<HERE
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: $VERSION_CODENAME $VERSION_CODENAME-updates $VERSION_CODENAME-backports
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: s390x
+
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: $VERSION_CODENAME-security
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: s390x
+HERE
+sudo apt-get update
+sudo apt-get install -y -o Dpkg::Options::=--force-architecture \
+	bear \
+	ccache \
+	g++ \
+	g++-s390x-linux-gnu \
+	gcc \
+	gcc-s390x-linux-gnu \
+	libc6:s390x \
+	libgtk2.0-dev \
+	make \
+	pkg-config \
+	qemu-user-static \
+	shellcheck \
+	shfmt \
+	qtcreator \
+	valgrind \
+	zlib1g \
+	zlib1g:s390x

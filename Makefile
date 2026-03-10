@@ -13,6 +13,7 @@ all:
 
 .PHONY: clean
 clean:
+	git clean -dfx
 	cd LuaJIT && git clean -dfx
 	cd luajit2 && git clean -dfx
 	cd luajit2-test-suite && git clean -dfx

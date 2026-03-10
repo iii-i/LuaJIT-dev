@@ -5,6 +5,7 @@ QtCreator-based LuaJIT development setup.
 ## Usage
 
 ```sh
+git submodule update --init --recursive
 make qtcreator
 ```
 
