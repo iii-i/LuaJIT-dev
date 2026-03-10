@@ -22,10 +22,14 @@ clean:
 	cd luajit2 && git clean -dfx
 	cd luajit2-test-suite && git clean -dfx
 
+.PHONY: __install
+__install:
+	cd $(FLAVOR) && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist-$(FLAVOR)
+
 .PHONY: install
 install:
-	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist-LuaJIT
-	cd LuaJIT && $(MAKE) $(MFLAGS) install PREFIX=$(PWD)/dist-luajit2
+	$(MAKE) __install FLAVOR=LuaJIT
+	$(MAKE) __install FLAVOR=luajit2
 
 .PHONY: __test
 __test:

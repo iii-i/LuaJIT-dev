@@ -24,6 +24,7 @@ sudo apt-get install -y -o Dpkg::Options::=--force-architecture \
 	g++-s390x-linux-gnu \
 	gcc \
 	gcc-s390x-linux-gnu \
+	gdb-multiarch \
 	libc6:s390x \
 	libgtk2.0-dev \
 	make \
@@ -35,3 +36,4 @@ sudo apt-get install -y -o Dpkg::Options::=--force-architecture \
 	valgrind \
 	zlib1g \
 	zlib1g:s390x
+sudo ln -fsT libz.so.1 /usr/lib/s390x-linux-gnu/libz.so
