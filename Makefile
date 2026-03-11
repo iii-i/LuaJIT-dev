@@ -2,6 +2,20 @@ MFLAGS=CCDEBUG=-g CCOPT=-O0 XCFLAGS="-DLUA_USE_ASSERT -DLUAJIT_USE_VALGRIND"
 # https://github.com/LuaJIT/LuaJIT/pull/1302
 SKIP_TESTS=test/sysdep/ffi_include_gtk.lua
 SKIP_TESTS+=test/sysdep/ffi_include_std.lua
+ifeq ($(CROSS),aarch64-linux-gnu-)
+# https://github.com/LuaJIT/LuaJIT/issues/858
+SKIP_TESTS+=test/unportable/ffi_arith_int64.lua
+endif
+ifeq ($(CROSS),s390x-linux-gnu-)
+# __gc metamethod not called
+SKIP_TESTS+=test/misc/debug_gc.lua
+# too many callbacks
+SKIP_TESTS+=test/ffi/ffi_enum.lua
+# too many callbacks
+SKIP_TESTS+=test/ffi/ffi_callback.lua
+# https://github.com/LuaJIT/LuaJIT/issues/858
+SKIP_TESTS+=test/unportable/ffi_arith_int64.lua
+endif
 # module 'table.clone' not found
 SKIP_TESTS+=test/misc/hstore_elimination.lua
 TESTS=$(shell cd luajit2-test-suite && git ls-files test/*.lua | grep -v $(foreach t,$(SKIP_TESTS),-e $(t)))

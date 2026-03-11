@@ -7,24 +7,27 @@ URIs: http://ports.ubuntu.com/ubuntu-ports/
 Suites: $VERSION_CODENAME $VERSION_CODENAME-updates $VERSION_CODENAME-backports
 Components: main universe restricted multiverse
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-Architectures: s390x
+Architectures: arm64 s390x
 
 Types: deb
 URIs: http://ports.ubuntu.com/ubuntu-ports/
 Suites: $VERSION_CODENAME-security
 Components: main universe restricted multiverse
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-Architectures: s390x
+Architectures: arm64 s390x
 HERE
 sudo apt-get update
 sudo apt-get install -y -o Dpkg::Options::=--force-architecture \
 	bear \
 	ccache \
 	g++ \
+	g++-aarch64-linux-gnu \
 	g++-s390x-linux-gnu \
 	gcc \
+	gcc-aarch64-linux-gnu \
 	gcc-s390x-linux-gnu \
 	gdb-multiarch \
+	libc6:arm64 \
 	libc6:s390x \
 	libgtk2.0-dev \
 	make \
@@ -35,5 +38,9 @@ sudo apt-get install -y -o Dpkg::Options::=--force-architecture \
 	qtcreator \
 	valgrind \
 	zlib1g \
+	zlib1g:arm64 \
 	zlib1g:s390x
-sudo ln -fsT libz.so.1 /usr/lib/s390x-linux-gnu/libz.so
+for arch in aarch64 s390x; do
+	[ -e /usr/lib/"$arch"-linux-gnu/libc.so ] || sudo ln -fsT libc.so.6 /usr/lib/"$arch"-linux-gnu/libc.so
+	[ -e /usr/lib/"$arch"-linux-gnu/libz.so ] || sudo ln -fsT libz.so.1 /usr/lib/"$arch"-linux-gnu/libz.so
+done
