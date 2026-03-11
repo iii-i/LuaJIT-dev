@@ -6,10 +6,14 @@ SKIP_TESTS+=test/sysdep/ffi_include_std.lua
 SKIP_TESTS+=test/misc/hstore_elimination.lua
 TESTS=$(shell cd luajit2-test-suite && git ls-files test/*.lua | grep -v $(foreach t,$(SKIP_TESTS),-e $(t)))
 
+.PHONY: __all
+__all:
+	cd $(FLAVOR) && $(MAKE) $(MFLAGS)
+
 .PHONY: all
 all:
-	cd LuaJIT && $(MAKE) $(MFLAGS)
-	cd luajit2 && $(MAKE) $(MFLAGS)
+	make __all FLAVOR=LuaJIT
+	make __all FLAVOR=luajit2
 
 .PHONY: clean
 clean:
@@ -52,6 +56,6 @@ qtcreator: bear
 gdb:
 	gdb-multiarch \
 		-ex 'set pagination off' \
+		-ex 'set sysroot /' \
 		-ex 'source scripts/luajit-gdb.py' \
-		-ex 'target remote :1234' \
-		LuaJIT/src/luajit
+		-ex 'target remote :1234'
