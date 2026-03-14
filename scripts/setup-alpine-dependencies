@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e -u x
+apk add \
+	gtk+2.0-dev \
+	g++ \
+	perl \
+	valgrind-dev \
+	git \
+	libc-dev \
+	gcc \
+	make
